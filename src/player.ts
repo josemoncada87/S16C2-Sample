@@ -1,24 +1,25 @@
-import p5 from 'p5';
+import p5 from "p5";
 
+const SIZE = 80;
 export default class Player {
-  private x:number = 0;
-  private y:number = 0;
-  private isProtected:boolean = false;
-  private isShieldEnable:boolean = true;
+  private x: number = 0;
+  private y: number = 0;
+  private isProtected: boolean = false;
+  private isShieldEnable: boolean = true;
 
-  constructor(x:number, y:number) {
+  constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
-  showShield(p:p5) {
+  showShield(p: p5) {
     p.fill(0, 0, 255, 20);
     p.circle(this.x, this.y, 100);
   }
 
-  show(p:p5) {
+  show(p: p5) {
     p.fill(255, 0, 0);
-    p.circle(this.x, this.y, 50);
+    p.circle(this.x * SIZE - 40, this.y * SIZE - 40, 50);
     if (this.isProtected) {
       this.showShield(p);
     }
@@ -52,7 +53,7 @@ export default class Player {
     this.isProtected = false;
   }
 
-  move(dir:number) {
+  move(dir: number) {
     switch (dir) {
       case 0: // der
         this.x += 1;
