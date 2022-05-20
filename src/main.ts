@@ -1,18 +1,28 @@
 /* eslint-disable no-param-reassign */
 import './style.css';
-import p5 from 'p5';
+import p5, { Image } from 'p5';
 import Player from './player';
 import Scenario from './scenario';
 import Bullet from './bullet';
+import Explosion from './explosion';
 
 const scenario = new Scenario();
 const player = new Player(0, 0);
 const bullets:Bullet[] = [];
-// let img: Image;
+const boomSprites: Image[] = [];
+const sprites: Explosion[] = [];
+let grass!: Image;
+let brownTree!: Image;
 
 const sketch = (p: p5) => {
   p.preload = () => {
-    // img = p.loadImage('../assests/imgimg.png');
+    for (let index = 1; index <= 5; index += 1) {
+      boomSprites.push(p.loadImage(`../assests/explosion${index}.png`));
+    }
+    grass = p.loadImage('../assests/tileGrass1.png');
+    scenario.setGrassImage(grass);
+    brownTree = p.loadImage('../assests/treeBrown_large.png');
+    scenario.setBrownTreeImage(brownTree);
   };
 
   p.setup = () => {
@@ -28,9 +38,15 @@ const sketch = (p: p5) => {
       bullet.show(p);
       const { result, row, col } = scenario.verifyCollision(bullet.getX(), bullet.getY());
       if (result) {
+        const boom = new Explosion(bullet.getX(), bullet.getY(), boomSprites);
+        boom.run();
+        sprites.push(boom);
         scenario.destroyBlock(row, col);
         bullets.splice(index, 1);
       }
+    });
+    sprites.forEach((boom) => {
+      boom.show(p);
     });
   };
 

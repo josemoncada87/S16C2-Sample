@@ -74,22 +74,22 @@ export default class Player {
 
   move(direction: PlayerDirection) {
     switch (direction) {
-      case 'RIGHT': // der
+      case 'RIGHT':
         if (this.refScenario?.isFreeSpace(this.row, this.col + 1)) {
           this.col += 1;
         }
         break;
-      case 'LEFT': // izq
+      case 'LEFT':
         if (this.refScenario?.isFreeSpace(this.row, this.col - 1)) {
           this.col -= 1;
         }
         break;
-      case 'UP': // arr
+      case 'UP':
         if (this.refScenario?.isFreeSpace(this.row - 1, this.col)) {
           this.row -= 1;
         }
         break;
-      case 'DOWN': // aba
+      case 'DOWN':
         if (this.refScenario?.isFreeSpace(this.row + 1, this.col)) {
           this.row += 1;
         }
@@ -97,9 +97,9 @@ export default class Player {
       default:
         break;
     }
+    this.direction = direction;
     this.updatePositionInPixels();
     this.weapon.updatePositionInPixels(this.x, this.y);
-    this.direction = direction;
     this.weapon.setDirection(this.direction);
   }
 

@@ -1,4 +1,4 @@
-import p5 from 'p5';
+import p5, { Image } from 'p5';
 
 const SIZE = 80;
 
@@ -12,13 +12,22 @@ export default class Scenario {
     [1, 1, 1, 1, 1],
   ];
 
+  private grass!:Image;
+  private tree!:Image;
+
   show(p: p5) {
     p.fill(255, 0, 0);
     this.matrix.forEach((arrow, a) => {
       arrow.forEach((cell, c) => {
-        if (cell === 0) p.fill(0);
-        if (cell === 1) p.fill(255);
+        p.fill(0, 100, 0);
         p.rect(c * SIZE, a * SIZE, SIZE, SIZE);
+        if (cell === 0) {
+          p.image(this.grass, c * SIZE, a * SIZE, SIZE, SIZE);
+          p.image(this.tree, c * SIZE, a * SIZE, SIZE, SIZE);
+        }
+        if (cell === 1) {
+          p.image(this.grass, c * SIZE, a * SIZE, SIZE, SIZE);
+        }
       });
     });
   }
@@ -61,5 +70,13 @@ export default class Scenario {
   isValidBlockPosition(row:number, col:number):boolean {
     return !(row >= this.matrix.length || row < 0
       || col >= this.matrix[row].length || col < 0);
+  }
+
+  setGrassImage(grass: Image) {
+    this.grass = grass;
+  }
+
+  setBrownTreeImage(tree: Image) {
+    this.tree = tree;
   }
 }
