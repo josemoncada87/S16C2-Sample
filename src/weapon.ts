@@ -29,7 +29,7 @@ export default class Weapon {
     p.rectMode(p.CENTER);
     p.translate(this.x, this.y);
     p.rotate(this.angle);
-    p.rect(0, 0, 10, 30);
+    p.rect(0, -15, 10, 30);
     p.rectMode(p.CORNER);
     p.pop();
   }
@@ -37,9 +37,31 @@ export default class Weapon {
   shoot() {
     const bullet = this.ammunition.pop();
     if (bullet !== undefined) {
-      bullet.shoot(this.x, this.y, this.direction);
+      const xWeaponOffset = this.defineOffsetX();
+      const yWeaponOffset = this.defineOffsetY();
+      bullet.shoot(this.x + xWeaponOffset, this.y + yWeaponOffset, this.direction);
     }
     return bullet;
+  }
+
+  defineOffsetX() {
+    let result = 0;
+    if (this.direction === 'LEFT') {
+      result = -30;
+    } else if (this.direction === 'RIGHT') {
+      result = +30;
+    }
+    return result;
+  }
+
+  defineOffsetY() {
+    let result = 0;
+    if (this.direction === 'UP') {
+      result = -30;
+    } else if (this.direction === 'DOWN') {
+      result = +30;
+    }
+    return result;
   }
 
   setOrientation() {
@@ -51,10 +73,10 @@ export default class Weapon {
         this.angle = Math.PI / 2;
         break;
       case 'UP':
-        this.angle = Math.PI;
+        this.angle = 0;
         break;
       case 'DOWN':
-        this.angle = 0;
+        this.angle = Math.PI;
         break;
       default:
         break;

@@ -68,37 +68,38 @@ export default class Player {
     return this.weapon.shoot();
   }
 
-  move(dir: number) {
-    switch (dir) {
-      case 0: // der
+  reloadWeapon() {
+    this.weapon.reloadBullets();
+  }
+
+  move(direction: PlayerDirection) {
+    switch (direction) {
+      case 'RIGHT': // der
         if (this.refScenario?.isFreeSpace(this.row, this.col + 1)) {
           this.col += 1;
         }
-        this.direction = 'RIGHT';
         break;
-      case 1: // izq
+      case 'LEFT': // izq
         if (this.refScenario?.isFreeSpace(this.row, this.col - 1)) {
           this.col -= 1;
         }
-        this.direction = 'LEFT';
         break;
-      case 2: // arr
+      case 'UP': // arr
         if (this.refScenario?.isFreeSpace(this.row - 1, this.col)) {
           this.row -= 1;
         }
-        this.direction = 'UP';
         break;
-      case 3: // aba
+      case 'DOWN': // aba
         if (this.refScenario?.isFreeSpace(this.row + 1, this.col)) {
           this.row += 1;
         }
-        this.direction = 'DOWN';
         break;
       default:
         break;
     }
     this.updatePositionInPixels();
     this.weapon.updatePositionInPixels(this.x, this.y);
+    this.direction = direction;
     this.weapon.setDirection(this.direction);
   }
 

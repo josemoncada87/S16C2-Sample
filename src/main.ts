@@ -22,11 +22,15 @@ const sketch = (p: p5) => {
 
   p.draw = () => {
     p.background(80);
-
     scenario.show(p);
     player.show(p);
-    bullets.forEach((bullet:Bullet) => {
+    bullets.forEach((bullet:Bullet, index:number) => {
       bullet.show(p);
+      const { result, row, col } = scenario.verifyCollision(bullet.getX(), bullet.getY());
+      if (result) {
+        scenario.destroyBlock(row, col);
+        bullets.splice(index, 1);
+      }
     });
   };
 
@@ -42,19 +46,19 @@ const sketch = (p: p5) => {
     }
 
     if (k === 'd') {
-      player.move(0);
+      player.move('RIGHT');
     }
 
     if (k === 'a') {
-      player.move(1);
+      player.move('LEFT');
     }
 
     if (k === 'w') {
-      player.move(2);
+      player.move('UP');
     }
 
     if (k === 's') {
-      player.move(3);
+      player.move('DOWN');
     }
 
     if (k === 'p') {
@@ -64,6 +68,10 @@ const sketch = (p: p5) => {
       } else {
         console.log('No bullets!! Run!! ');
       }
+    }
+
+    if (k === 'o') {
+      player.reloadWeapon();
     }
   };
 };

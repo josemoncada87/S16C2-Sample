@@ -5,6 +5,8 @@ export default class Bullet {
   private x!:number;
   private y!:number;
   private direction!:PlayerDirection;
+  private aceleration:number = 0.5;
+  private speed:number = 1;
 
   shoot(x:number, y:number, direction:PlayerDirection) {
     this.x = x;
@@ -15,25 +17,34 @@ export default class Bullet {
   move() {
     switch (this.direction) {
       case 'UP':
-        this.y -= 1;
+        this.y -= this.speed;
         break;
       case 'DOWN':
-        this.y += 1;
+        this.y += this.speed;
         break;
       case 'LEFT':
-        this.x -= 1;
+        this.x -= this.speed;
         break;
       case 'RIGHT':
-        this.x += 1;
+        this.x += this.speed;
         break;
       default:
         break;
     }
+    this.speed += this.aceleration;
   }
 
   show(p:p5) {
     p.fill(0, 255, 0);
     p.circle(this.x, this.y, 10);
     this.move();
+  }
+
+  getX() {
+    return this.x;
+  }
+
+  getY() {
+    return this.y;
   }
 }
