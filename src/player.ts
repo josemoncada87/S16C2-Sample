@@ -73,26 +73,26 @@ export default class Player {
       case 0: // der
         if (this.refScenario?.isFreeSpace(this.row, this.col + 1)) {
           this.col += 1;
-          this.direction = 'RIGHT';
         }
+        this.direction = 'RIGHT';
         break;
       case 1: // izq
         if (this.refScenario?.isFreeSpace(this.row, this.col - 1)) {
           this.col -= 1;
-          this.direction = 'LEFT';
         }
+        this.direction = 'LEFT';
         break;
       case 2: // arr
         if (this.refScenario?.isFreeSpace(this.row - 1, this.col)) {
           this.row -= 1;
-          this.direction = 'UP';
         }
+        this.direction = 'UP';
         break;
       case 3: // aba
         if (this.refScenario?.isFreeSpace(this.row + 1, this.col)) {
           this.row += 1;
-          this.direction = 'DOWN';
         }
+        this.direction = 'DOWN';
         break;
       default:
         break;
