@@ -5,10 +5,10 @@ const SIZE = 80;
 export default class Scenario {
   private matrix: Array<Array<number>> = [
     [1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1],
     [1, 0, 1, 0, 1],
     [1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1],
     [1, 1, 1, 1, 1],
   ];
 

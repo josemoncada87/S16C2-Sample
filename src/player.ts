@@ -1,3 +1,4 @@
+import { sign } from 'crypto';
 import p5 from 'p5';
 import Scenario from './scenario';
 
@@ -5,23 +6,31 @@ const SIZE = 80;
 export default class Player {
   private x: number = 0;
   private y: number = 0;
+  private row: number = 0;
+  private col: number = 0;
   private isProtected: boolean = false;
   private isShieldEnable: boolean = true;
   private refScenario: Scenario | null = null;
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  constructor(row: number, col: number) {
+    this.row = row;
+    this.col = col;
+    this.updatePositionInPixels();
+  }
+
+  updatePositionInPixels() {
+    this.x = (this.col * SIZE) + SIZE / 2;
+    this.y = (this.row * SIZE) + SIZE / 2;
   }
 
   showShield(p: p5) {
     p.fill(0, 0, 255, 20);
-    p.circle(this.x * SIZE - 40, this.y * SIZE - 40, 100);
+    p.circle(this.x, this.y, 100);
   }
 
   show(p: p5) {
     p.fill(255, 0, 0);
-    p.circle(this.x * SIZE - 40, this.y * SIZE - 40, 50);
+    p.circle(this.x, this.y, 50);
     if (this.isProtected) {
       this.showShield(p);
     }
@@ -58,30 +67,29 @@ export default class Player {
   move(dir: number) {
     switch (dir) {
       case 0: // der
-        console.log('derecha', this.refScenario?.isFreeSpace(this.y, this.x + 1));
-        if (this.refScenario?.isFreeSpace(this.y, this.x + 1)) {
-          this.x += 1;
+        if (this.refScenario?.isFreeSpace(this.row, this.col + 1)) {
+          this.col += 1;
         }
         break;
       case 1: // izq
-        console.log('izquierda', this.refScenario?.isFreeSpace(this.y, this.x - 1));
-        if (this.refScenario?.isFreeSpace(this.y, this.x - 1)) {
-          this.x -= 1;
+        if (this.refScenario?.isFreeSpace(this.row, this.col - 1)) {
+          this.col -= 1;
         }
         break;
       case 2: // arr
-        if (this.refScenario?.isFreeSpace(this.y - 1, this.x)) {
-          this.y -= 1;
+        if (this.refScenario?.isFreeSpace(this.row - 1, this.col)) {
+          this.row -= 1;
         }
         break;
       case 3: // aba
-        if (this.refScenario?.isFreeSpace(this.y + 1, this.x)) {
-          this.y += 1;
+        if (this.refScenario?.isFreeSpace(this.row + 1, this.col)) {
+          this.row += 1;
         }
         break;
       default:
         break;
     }
+    this.updatePositionInPixels();
   }
 
   getX() {
