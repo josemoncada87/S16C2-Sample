@@ -3,9 +3,11 @@ import './style.css';
 import p5 from 'p5';
 import Player from './player';
 import Scenario from './scenario';
+import Bullet from './bullet';
 
 const scenario = new Scenario();
 const player = new Player(0, 0);
+const bullets:Bullet[] = [];
 // let img: Image;
 
 const sketch = (p: p5) => {
@@ -23,6 +25,9 @@ const sketch = (p: p5) => {
 
     scenario.show(p);
     player.show(p);
+    bullets.forEach((bullet:Bullet) => {
+      bullet.show(p);
+    });
   };
 
   p.keyPressed = () => {
@@ -50,6 +55,15 @@ const sketch = (p: p5) => {
 
     if (k === 's') {
       player.move(3);
+    }
+
+    if (k === 'p') {
+      const newBullet = player.shootWeapon();
+      if (newBullet !== undefined) {
+        bullets.push(newBullet);
+      } else {
+        console.log('No bullets!! Run!! ');
+      }
     }
   };
 };
