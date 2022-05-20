@@ -1,4 +1,5 @@
-import p5 from "p5";
+import p5 from 'p5';
+import Scenario from './scenario';
 
 const SIZE = 80;
 export default class Player {
@@ -6,6 +7,7 @@ export default class Player {
   private y: number = 0;
   private isProtected: boolean = false;
   private isShieldEnable: boolean = true;
+  private refScenario: Scenario | null = null;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -14,7 +16,7 @@ export default class Player {
 
   showShield(p: p5) {
     p.fill(0, 0, 255, 20);
-    p.circle(this.x, this.y, 100);
+    p.circle(this.x * SIZE - 40, this.y * SIZE - 40, 100);
   }
 
   show(p: p5) {
@@ -56,10 +58,26 @@ export default class Player {
   move(dir: number) {
     switch (dir) {
       case 0: // der
-        this.x += 1;
+        console.log('derecha', this.refScenario?.isFreeSpace(this.y, this.x + 1));
+        if (this.refScenario?.isFreeSpace(this.y, this.x + 1)) {
+          this.x += 1;
+        }
         break;
       case 1: // izq
-        this.x -= 1;
+        console.log('izquierda', this.refScenario?.isFreeSpace(this.y, this.x - 1));
+        if (this.refScenario?.isFreeSpace(this.y, this.x - 1)) {
+          this.x -= 1;
+        }
+        break;
+      case 2: // arr
+        if (this.refScenario?.isFreeSpace(this.y - 1, this.x)) {
+          this.y -= 1;
+        }
+        break;
+      case 3: // aba
+        if (this.refScenario?.isFreeSpace(this.y + 1, this.x)) {
+          this.y += 1;
+        }
         break;
       default:
         break;
@@ -68,5 +86,9 @@ export default class Player {
 
   getX() {
     return this.x;
+  }
+
+  setScenario(scenario: Scenario) {
+    this.refScenario = scenario;
   }
 }

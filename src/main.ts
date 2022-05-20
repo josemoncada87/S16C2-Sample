@@ -1,40 +1,55 @@
 /* eslint-disable no-param-reassign */
-import "./style.css";
-import p5, { Image } from "p5";
-import Player from "./player";
-import Scenario from "./scenerio";
+import './style.css';
+import p5 from 'p5';
+import Player from './player';
+import Scenario from './scenario';
 
-const player = new Player(2, 5);
 const scenario = new Scenario();
-let img: Image;
+const player = new Player(0, 0);
+// let img: Image;
 
 const sketch = (p: p5) => {
   p.preload = () => {
-    img = p.loadImage("../assets/imgimg.png");
+    // img = p.loadImage('../assests/imgimg.png');
   };
 
   p.setup = () => {
     p.createCanvas(500, 500);
+    player.setScenario(scenario);
   };
 
   p.draw = () => {
     p.background(80);
-    p.image(img, 0, 0, 500, 500);
+
     scenario.show(p);
     player.show(p);
   };
 
   p.keyPressed = () => {
-    if (p.key.toLocaleLowerCase() === "q") {
+    const k = p.key.toLocaleLowerCase();
+
+    if (k === 'q') {
       if (player.activateProtection()) {
-        console.log("I am hulk!!");
+        // console.log('I am hulk!!');
       } else {
-        console.log(" F ");
+        // console.log(' F ');
       }
     }
 
-    if (p.key.toLocaleLowerCase() === "d") {
+    if (k === 'd') {
       player.move(0);
+    }
+
+    if (k === 'a') {
+      player.move(1);
+    }
+
+    if (k === 'w') {
+      player.move(2);
+    }
+
+    if (k === 's') {
+      player.move(3);
     }
   };
 };
